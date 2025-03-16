@@ -1,0 +1,39 @@
+@font-face {
+  font-family: "pricefont";
+  src: url("/fonts/ATTRACTMOREWOMEN-Edited.ttf");
+}
+
+/* Cible les (enfin le) h3 de body */
+.centeredText {
+    color: #aeaeae;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    top: 45px;
+    font-family: "Helvetica";
+    font-weight: bold;
+  }
+
+/* Bouton de selection (c'est dans le nom) */
+.selectButton {
+    align-items: center;
+    border: 3px solid #D41B19;
+    background-color: #D41B19;
+    border-radius: 171px;
+    color: #fff;
+    font-family: "Arial";
+    width: 22vmin;
+  }
+
+/* Quand le curseur est sur .selectButton */
+  .selectButton:hover {
+    border: 3px solid #B3201C;
+    background-color: #B3201C;
+  }
+
+/* Quand on clique sur .selectButton */
+  .selectButton:active {
+    background-color: #8F0F12;
+    border: 3px solid #8F0F12;
+  }

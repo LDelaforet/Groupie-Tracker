@@ -1,0 +1,132 @@
+{{define "artistReleases"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Releases de {{.ArtistName}}</title>
+    <link rel="icon" type="image/x-icon" href="/pictures/favicon.png">
+    <link rel="stylesheet" href="/styles/searchResultStyles.css">
+    <link rel="stylesheet" href="/styles/titlebarStyles.css">
+    <link rel="stylesheet" href="/styles/popup.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/scripts/favorites.js" defer></script>
+    <script>
+        // Fonction pour rediriger vers la page de détail d'une release ou d'un master
+        function goToReleasePage(id, type) {
+            if (type === 'release') {
+                window.location.href = '/release?id=' + id;
+            } else if (type === 'master') {
+                window.location.href = '/master?id=' + id;
+            }
+        }
+    </script>
+</head>
+<body>
+    {{if .OAuthPopup}}
+    <div class="popupBackground" id="popupBackground">
+        <div class="popup" id="popup">
+            <h1>Cliquez ici pour vous authentifier</h1>
+            <a href="{{.OAuthLink}}"><button type="popupButton" class="popupButton">S'authentifier</button></a>
+        </div>
+    </div>
+    {{end}}
+    <div class="titleBar">
+        <div class="titlebarButtonsContainer">
+            <button class="titlebarButton" id="titleBar_Index" onclick="window.location.href='/'">Accueil</button>
+            <button class="titlebarButton" id="titleBar_resultMgmt" onclick="window.location.href='/favorites'">Favoris</button>
+        </div>
+
+        <img src="/pictures/logo.png" alt="Logo">
+        
+        <div class="titlebarRightButtonsContainer">
+            <button class="titlebarButton" id="titleBar_About" onclick="window.location.href='/about'">À propos</button>
+        </div>
+    </div>
+
+    <!-- Filtres pour trier les releases -->
+    <div style="display: flex; justify-content: center; margin-top: 10vmin; margin-bottom: 2vmin;">
+        <form action="/artistReleases?id={{.ArtistID}}" method="GET" style="width: 100%; max-width: 50vmin; display: flex; flex-direction: column; align-items: center;">
+            <div style="display: flex; justify-content: center; margin-top: 8px; gap: 10px;">
+                <select name="type" class="search-filter">
+                    <option value="" {{if eq .Type ""}}selected{{end}}>Tous les types</option>
+                    <option value="release" {{if eq .Type "release"}}selected{{end}}>Sorties</option>
+                    <option value="master" {{if eq .Type "master"}}selected{{end}}>Masters</option>
+                </select>
+                <select name="year" class="search-filter">
+                    <option value="" {{if eq .Year ""}}selected{{end}}>Toutes les années</option>
+                    <option value="2020-2023" {{if eq .Year "2020-2023"}}selected{{end}}>2020-2023</option>
+                    <option value="2010-2019" {{if eq .Year "2010-2019"}}selected{{end}}>2010-2019</option>
+                    <option value="2000-2009" {{if eq .Year "2000-2009"}}selected{{end}}>2000-2009</option>
+                    <option value="1990-1999" {{if eq .Year "1990-1999"}}selected{{end}}>1990-1999</option>
+                    <option value="1980-1989" {{if eq .Year "1980-1989"}}selected{{end}}>1980-1989</option>
+                    <option value="1970-1979" {{if eq .Year "1970-1979"}}selected{{end}}>1970-1979</option>
+                    <option value="1960-1969" {{if eq .Year "1960-1969"}}selected{{end}}>1960-1969</option>
+                    <option value="1950-1959" {{if eq .Year "1950-1959"}}selected{{end}}>1950-1959</option>
+                </select>
+                <button type="submit" class="search-filter">Appliquer</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Liste des releases -->
+    <div class="mainProductDiv">
+        <ol class="resultList">
+            {{range .Releases}}
+            <li>
+                <div class="resultDiv {{if or (eq .Type "release") (eq .Type "master")}}clickable-result{{end}}" 
+                     {{if or (eq .Type "release") (eq .Type "master")}}onclick="goToReleasePage({{.ID}}, '{{.Type}}');"{{end}}>
+                    <div class="imageContainer">
+                        <img class="resultImage" src="{{.Thumb}}" alt="">
+                        <img class="isFav" src="{{if .IsFavorite}}/pictures/star_filled.svg{{else}}/pictures/star_empty.svg{{end}}" alt="" data-release-id="{{printf "%d" .ID}}" data-type="{{.Type}}" onclick="event.stopPropagation();">
+                    </div>
+                    <div class="resultInfo">
+                        <h1 class="resultName">{{.Title}}</h1>
+                        <h2 class="resultTypeDisp">{{.TypeDisp}}</h2>
+                        <div class="yearCountryContainer">
+                            <span class="resultYear">{{.Year}}</span>
+                            <span class="resultCountry">{{.Artist}}</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {{end}}
+        </ol>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-controls">
+        <div class="style_paging">
+            <div class="style_pagingCarrier">
+                <div>
+                    {{if gt .Pagination.Page 1}}
+                    <a href="/artistReleases?id={{.ArtistID}}&page={{subtract .Pagination.Page 1}}&per_page={{.Pagination.PerPage}}" title="Page précédente">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8899a4" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                            <path d="M15 18l-6-6 6-6"></path>
+                        </svg>
+                    </a>
+                    {{else}}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                    {{end}}
+                </div>
+                <span><span style="font-weight:400">Page {{.Pagination.Page}}</span></span>
+                <div>
+                    {{if lt .Pagination.Page .Pagination.Pages}}
+                    <a href="/artistReleases?id={{.ArtistID}}&page={{add .Pagination.Page 1}}&per_page={{.Pagination.PerPage}}" title="Page suivante">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8899a4" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                            <path d="M9 18l6-6-6-6"></path>
+                        </svg>
+                    </a>
+                    {{else}}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{{end}}

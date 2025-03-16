@@ -1,0 +1,131 @@
+{{define "releaseDisplay"}}
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/x-icon" href="/pictures/favicon.png">
+    <link rel="stylesheet" href="/styles/searchResultStyles.css">
+    <link rel="stylesheet" href="/styles/titlebarStyles.css">
+    <link rel="stylesheet" href="/styles/popup.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/releaseStyles.css">
+    <script src="/scripts/popup.js" defer></script>
+    <script src="/scripts/favorites.js" defer></script>
+    <title>{{.Title}} - {{range .Artists}}{{.Name}}{{end}}</title>
+</head>
+<body>
+    {{if .OAuthPopup}}
+    <div class="popupBackground" id="popupBackground">
+        <div class="popup" id="popup">
+            <h1>Cliquez ici pour vous authentifier</h1>
+            <a href="{{.OAuthLink}}"><button type="popupButton" class="popupButton">S'authentifier</button></a>
+        </div>
+    </div>
+    {{end}}
+    <div class="titleBar">
+        <div class="titlebarButtonsContainer">
+            <button class="titlebarButton" id="titleBar_Index" onclick="window.location.href='/'">Accueil</button>
+            <button class="titlebarButton" id="titleBar_resultMgmt" onclick="window.location.href='/favorites'">Favoris</button>
+        </div>
+
+        <img src="/pictures/logo.png" alt="Logo">
+        
+        <div class="titlebarRightButtonsContainer">
+            <button class="titlebarButton" id="titleBar_About" onclick="window.location.href='/about'">À propos</button>
+        </div>
+    </div>
+
+    <div class="release-container">
+        <div class="release-header">
+            <div class="release-cover">
+                {{range .Images}}
+                    {{if eq .Type "primary"}}
+                    <img src="{{.Uri}}" alt="{{$.Title}} cover">
+                    {{end}}
+                {{end}}
+                <div class="favorite-button" data-release-id="{{.ID}}" data-type="release">
+                    <img src="/pictures/star_empty.svg" alt="Ajouter aux favoris">
+                </div>
+            </div>
+            <div class="release-info">
+                <h1 class="release-title">{{.Title}}</h1>
+                <div class="release-artists">
+                    {{range .Artists}}
+                    <a href="/artist?id={{.ID}}" class="artist-link">
+                    <div class="artist-info">
+                        <img src="{{.ThumbnailURL}}" alt="{{.Name}}" class="artist-thumbnail">
+                        <span class="artist-name">{{.Name}}</span>
+                    </div>
+                    </a>
+                    {{end}}
+                </div>
+                <div class="release-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Année:</span>
+                        <span class="detail-value">{{.Year}}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Pays:</span>
+                        <span class="detail-value">{{.Country}}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Date de sortie:</span>
+                        <span class="detail-value">{{.Released}}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Genres:</span>
+                        <div class="detail-tags">
+                            {{range .Genres}}
+                            <span class="tag">{{.}}</span>
+                            {{end}}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Styles:</span>
+                        <div class="detail-tags">
+                            {{range .Styles}}
+                            <span class="tag">{{.}}</span>
+                            {{end}}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Format:</span>
+                        <div class="detail-value">
+                            {{range .Formats}}
+                            {{.Qty}}× {{.Name}} ({{range $i, $desc := .Descriptions}}{{if $i}}, {{end}}{{$desc}}{{end}})
+                            {{end}}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Labels:</span>
+                        <div class="labels-container">
+                            {{range .Labels}}
+                            <div class="label-info">
+                                <img src="{{.ThumbnailURL}}" alt="{{.Name}}" class="label-thumbnail">
+                                <span class="label-name">{{.Name}}</span>
+                            </div>
+                            {{end}}
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Lien Discogs:</span>
+                        <a href="{{.URI}}" target="_blank" class="discogs-link">Voir sur Discogs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tracklist-section">
+            <h2>Liste des pistes</h2>
+            <div class="tracklist">
+                {{range .Tracklist}}
+                <div class="track-item">
+                    <div class="track-position">{{.Position}}</div>
+                    <div class="track-title">{{.Title}}</div>
+                    <div class="track-duration">{{.Duration}}</div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{{end}}

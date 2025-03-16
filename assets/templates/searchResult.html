@@ -1,0 +1,227 @@
+{{define "searchResults"}}
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/x-icon" href="/pictures/favicon.png">
+    <link rel="stylesheet" href="/styles/searchResultStyles.css">
+    <link rel="stylesheet" href="/styles/titlebarStyles.css">
+    <link rel="stylesheet" href="/styles/popup.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/scripts/favorites.js" defer></script>
+    <title>Home</title>
+    <script>
+        // Fonction pour rediriger vers la page de détail d'une release ou d'un master
+        function goToReleasePage(id, type) {
+            if (type === 'release') {
+                window.location.href = '/release?id=' + id;
+            } else if (type === 'master') {
+                window.location.href = '/master?id=' + id;
+            } else if (type === 'artist') {
+                window.location.href = '/artist?id=' + id;
+            }
+        }
+    </script>
+</head>
+<body>
+    {{if .OAuthPopup}}
+    <div class="popupBackground" id="popupBackground">
+        <div class="popup" id="popup">
+            <h1>Cliquez ici pour vous authentifier</h1>
+            <a href="{{.OAuthLink}}"><button type="popupButton" class="popupButton">S'authentifier</button></a>
+        </div>
+    </div>
+    {{end}}
+    <div class="titleBar">
+        <div class="titlebarButtonsContainer">
+            <button class="titlebarButton" id="titleBar_Index" onclick="window.location.href='/'">Accueil</button>
+            <button class="titlebarButton" id="titleBar_resultMgmt" onclick="window.location.href='/favorites'">Favoris</button>
+        </div>
+
+        <img src="/pictures/logo.png" alt="Logo">
+        
+        <div class="titlebarRightButtonsContainer">
+            <button class="titlebarButton" id="titleBar_About" onclick="window.location.href='/about'">À propos</button>
+        </div>
+    </div>
+    
+    <!-- Barre de recherche simplifiée -->
+    <div style="display: flex; justify-content: center; margin-top: 10vmin; margin-bottom: 2vmin;">
+        <form action="/search" method="GET" style="width: 100%; max-width: 50vmin; display: flex; flex-direction: column; align-items: center;">
+            <div style="display: flex; background-color: #fff; border-radius: 20px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); padding: 4px 15px; height: 5vmin; width: 100%;">
+                <input type="text" name="q" placeholder="Rechercher un master / album / artiste..." value="{{.SearchQuery}}" style="flex: 1; border: none; outline: none; font-size: 1.8vmin; padding: 0 12px; background: transparent; font-family: 'Helvetica', Arial, sans-serif;">
+                <button type="submit" style="background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px;">
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="#666" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                </button>
+            </div>
+            <div style="display: flex; justify-content: center; margin-top: 8px; gap: 10px;">
+                <select name="type" class="search-filter">
+                    <option value="" {{if eq .Type ""}}selected{{end}}>Tous les types</option>
+                    <option value="release" {{if eq .Type "release"}}selected{{end}}>Sorties</option>
+                    <option value="master" {{if eq .Type "master"}}selected{{end}}>Masters</option>
+                    <option value="artist" {{if eq .Type "artist"}}selected{{end}}>Artistes</option>
+                    <option value="label" {{if eq .Type "label"}}selected{{end}}>Labels</option>
+                </select>
+                <select name="year" class="search-filter">
+                    <option value="" {{if eq .Year ""}}selected{{end}}>Toutes les années</option>
+                    <option value="2020-2023" {{if eq .Year "2020-2023"}}selected{{end}}>2020-2023</option>
+                    <option value="2010-2019" {{if eq .Year "2010-2019"}}selected{{end}}>2010-2019</option>
+                    <option value="2000-2009" {{if eq .Year "2000-2009"}}selected{{end}}>2000-2009</option>
+                    <option value="1990-1999" {{if eq .Year "1990-1999"}}selected{{end}}>1990-1999</option>
+                    <option value="1980-1989" {{if eq .Year "1980-1989"}}selected{{end}}>1980-1989</option>
+                    <option value="1970-1979" {{if eq .Year "1970-1979"}}selected{{end}}>1970-1979</option>
+                    <option value="1960-1969" {{if eq .Year "1960-1969"}}selected{{end}}>1960-1969</option>
+                    <option value="1950-1959" {{if eq .Year "1950-1959"}}selected{{end}}>1950-1959</option>
+                </select>
+                <select name="genre" class="search-filter">
+                    <option value="" {{if eq .Genre ""}}selected{{end}}>Tous les genres</option>
+                    <option value="Blues" {{if eq .Genre "Blues"}}selected{{end}}>Blues</option>
+                    <option value="Brass & Military" {{if eq .Genre "Brass & Military"}}selected{{end}}>Fanfares & Militaires</option>
+                    <option value="Children's" {{if eq .Genre "Children's"}}selected{{end}}>Pour Enfant</option>
+                    <option value="Classical" {{if eq .Genre "Classical"}}selected{{end}}>Classique</option>
+                    <option value="Electronic" {{if eq .Genre "Electronic"}}selected{{end}}>Électronique</option>
+                    <option value="Folk, World, & Country" {{if eq .Genre "Folk, World, & Country"}}selected{{end}}>Folk, Musique du Monde, & Country</option>
+                    <option value="Funk / Soul" {{if eq .Genre "Funk / Soul"}}selected{{end}}>Funk / Soul</option>
+                    <option value="Hip Hop" {{if eq .Genre "Hip Hop"}}selected{{end}}>Hip-Hop</option>
+                    <option value="Jazz" {{if eq .Genre "Jazz"}}selected{{end}}>Jazz</option>
+                    <option value="Latin" {{if eq .Genre "Latin"}}selected{{end}}>Latin</option>
+                    <option value="Non-Music" {{if eq .Genre "Non-Music"}}selected{{end}}>Pas de musique</option>
+                    <option value="Pop" {{if eq .Genre "Pop"}}selected{{end}}>Pop</option>
+                    <option value="Reggae" {{if eq .Genre "Reggae"}}selected{{end}}>Reggae</option>
+                    <option value="Rock" {{if eq .Genre "Rock"}}selected{{end}}>Rock</option>
+                    <option value="Stage & Screen" {{if eq .Genre "Stage & Screen"}}selected{{end}}>Scène & Écran</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+     
+        <!-- J'aime bien avoir tout le systeme de pagination en haut et en bas -->
+     <div class="pagination-controls">
+        <div class="style_paging">
+            <div class="style_pagingCarrier">
+                <div>
+                    {{if gt .CurrentPage 1}}
+                    <a href="/search?q={{.SearchQuery}}&year={{.Year}}&type={{.Type}}&genre={{.Genre}}&page={{subtract .CurrentPage 1}}&per_page={{.PerPage}}" title="Page précédente">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8899a4" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                            <path d="M15 18l-6-6 6-6"></path>
+                        </svg>
+                    </a>
+                    {{else}}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                    {{end}}
+                </div>
+                <span><span style="font-weight:400">Page {{.CurrentPage}}</span></span>
+                <div>
+                    {{if .HasNextPage}}
+                    <a href="/search?q={{.SearchQuery}}&year={{.Year}}&type={{.Type}}&genre={{.Genre}}&page={{add .CurrentPage 1}}&per_page={{.PerPage}}" title="Page suivante">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8899a4" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                            <path d="M9 18l6-6-6-6"></path>
+                        </svg>
+                    </a>
+                    {{else}}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+        
+        <div class="per-page-selector">
+            <form action="/search" method="GET">
+                <input type="hidden" name="q" value="{{.SearchQuery}}">
+                <input type="hidden" name="year" value="{{.Year}}">
+                <input type="hidden" name="type" value="{{.Type}}">
+                <input type="hidden" name="genre" value="{{.Genre}}">
+                <input type="hidden" name="page" value="1">
+                <label for="per_page">Éléments par page:</label>
+                <select name="per_page" id="per_page" class="search-filter" onchange="this.form.submit()">
+                    <option value="10" {{if eq .PerPage 10}}selected{{end}}>10</option>
+                    <option value="20" {{if eq .PerPage 20}}selected{{end}}>20</option>
+                    <option value="30" {{if eq .PerPage 30}}selected{{end}}>30</option>
+                    <option value="50" {{if eq .PerPage 50}}selected{{end}}>50</option>
+                </select>
+            </form>
+        </div>
+    </div>
+
+    <div class="mainProductDiv">
+        <ol class="resultList">
+            {{range .Results}}
+            <li>
+                <div class="resultDiv clickable-result" onclick="goToReleasePage({{.ID}}, '{{.Type}}');">
+                    <div class="imageContainer">
+                        <img class="resultImage" src="{{.ImageLink}}" alt="">
+                        <img class="isFav" src="{{if .IsFavorite}}/pictures/star_filled.svg{{else}}/pictures/star_empty.svg{{end}}" alt="" data-release-id="{{printf "%d" .ID}}" data-type="{{.Type}}" onclick="event.stopPropagation();">
+                    </div>
+                    <div class="resultInfo">
+                        <h1 class="resultName">{{.Title}}</h1>
+                        <h2 class="resultTypeDisp">{{.TypeDisp}}</h2>
+                        <div class="yearCountryContainer">
+                            <span class="resultYear">{{.Year}}</span>
+                            <span class="resultCountry">{{.Country}}</a></span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {{end}}
+        </ol>
+    </div>
+    
+    <!-- Contrôles de pagination -->
+    <div class="pagination-controls">
+        <div class="style_paging">
+            <div class="style_pagingCarrier">
+                <div>
+                    {{if gt .CurrentPage 1}}
+                    <a href="/search?q={{.SearchQuery}}&year={{.Year}}&type={{.Type}}&genre={{.Genre}}&page={{subtract .CurrentPage 1}}&per_page={{.PerPage}}" title="Page précédente">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8899a4" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                            <path d="M15 18l-6-6 6-6"></path>
+                        </svg>
+                    </a>
+                    {{else}}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                    {{end}}
+                </div>
+                <span><span style="font-weight:400">Page {{.CurrentPage}}</span></span>
+                <div>
+                    {{if .HasNextPage}}
+                    <a href="/search?q={{.SearchQuery}}&year={{.Year}}&type={{.Type}}&genre={{.Genre}}&page={{add .CurrentPage 1}}&per_page={{.PerPage}}" title="Page suivante">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8899a4" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                            <path d="M9 18l6-6-6-6"></path>
+                        </svg>
+                    </a>
+                    {{else}}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+                        <path d="M9 18l6-6-6-6"></path>
+                    </svg>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+        
+        <div class="per-page-selector">
+            <form action="/search" method="GET">
+                <input type="hidden" name="q" value="{{.SearchQuery}}">
+                <input type="hidden" name="year" value="{{.Year}}">
+                <input type="hidden" name="type" value="{{.Type}}">
+                <input type="hidden" name="genre" value="{{.Genre}}">
+                <input type="hidden" name="page" value="1">
+                <label for="per_page">Éléments par page:</label>
+                <select name="per_page" id="per_page" class="search-filter" onchange="this.form.submit()">
+                    <option value="10" {{if eq .PerPage 10}}selected{{end}}>10</option>
+                    <option value="20" {{if eq .PerPage 20}}selected{{end}}>20</option>
+                    <option value="30" {{if eq .PerPage 30}}selected{{end}}>30</option>
+                    <option value="50" {{if eq .PerPage 50}}selected{{end}}>50</option>
+                </select>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+{{end}}

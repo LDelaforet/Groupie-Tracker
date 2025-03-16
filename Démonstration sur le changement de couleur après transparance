@@ -1,0 +1,136 @@
+Preuve de concept de transformation de couleur avec application de transparance
+Par Léo Velazquez, le 09/03 a 3h du mat...
+
+Contexte:
+Dans mon site je compte appliquer de la transparance a un élement sans que sa couleur ne change cependant je dois calculer la valeur qu'il faut pour que cela blend avec le fond.
+J'ai au début tenté des valeurs aléatoires sans grand succès, je vais donc tenter de calculer moi même les valeurs de front qu'il faut pour qu'une fois la transparance appliquée, 
+le mélange avec le fond donne la couleur que je souhaite.
+
+
+On assumera tout au long de la démonstration que la transparance est de 83% de la valeur de front, donc 17% de la valeur de back.
+La valeur de fin est la valeur qui apparaitra a l'écran une fois la transparance appliquée.
+
+
+Dans mon exemple actuel, le fond a la couleur #393D47, mon front a la couleur #292626, lorsque j'applique la transparance, la valeur #2C2A2C apparait.
+Je vais tenter dans cette première partie de refaire la transparance a la fin afin d'avoir la formule exacte:
+
+       R  G  B
+fond: 57 61 71
+front: 41 38 38
+fin:  44 42 44
+
+57 * 0,17 = 9.69
+41 * 0,83 = 34.03
+9,69 + 34,03 = 43.72 = 44
+
+61 * 0,17 = 10.37
+38 * 0,83 = 31,54
+10,37 + 31,54 = 41,91 = 42
+
+71 * 0,17 = 12,07
+38 * 0,83 = 31,54
+12,07 + 31,54 = 43,61 = 44
+
+Les valeurs 44 42 44 une fois mis en hexa et concateneées donnent bien #2C2A2C, j'ai donc bien réussi a calculer la formule de transparance.
+En abstrayant la valeur R/G/B du fond en X, celle du front en Y et celle de fin en Z, j'ai la formule suivante:
+
+Z = (X * 0,17) + (Y * 0,83)
+
+
+Je vais maintenant tenter de calculer la valeur de front necessaire afin d'obtenir la valeur de fin voulue.
+
+Le processus lui meme ce rapproche d'une résolution d'équation, nous allons donc le traiter comme tel.
+
+
+
+La valeur a extraire est Y:
+
+Y = 
+
+Z s'obtient en additionnant X a Y, pour obtenir Y il faut donc soustraire X a Z:
+
+Y = Z -
+
+X ne bouge pas, je continue de le multiplier a 0.17:
+
+Y = Z - (X * 0.17)
+
+Pour obtenir Z on multiplie Y par 0.83, afin d'avoir Y, il faut donc diviser toute notre operation par 0.83. La fonction de fin serait donc:
+
+Y = (Z - (X * 0.17)) / 0.83
+
+
+Notre équation de fin terminée nous allons l'essayer sur nos anciennes valeurs afin de la tester.
+       
+       R  G  B
+fond: 57 61 71  X
+front: 41 38 38 Y
+fin:  44 42 44  Z
+
+
+X1: 57, X2: 61, X3: 71
+Z1: 44, Z2: 42, Z3: 44
+
+Y1 = (Z1 - (X1 * 0.17)) / 0.83
+   = (44 - (57 * 0.17)) / 0.83
+   = (44 - 9.69) / 0.83
+   = 34.31 / 0.83
+   = 41.33 = 41
+   
+
+Y2 = (Z2 - (X2 * 0.17)) / 0.83
+   = (42 - (61 * 0.17)) / 0.83
+   = (42 - 10.37) / 0.83
+   = 31.63 / 0.83
+   = 38.10 = 38
+
+Y3 = (Z3 - (X3 * 0.17)) / 0.83
+   = (44 - (71 * 0.17)) / 0.83
+   = (44 - 12.07) / 0.83
+   = 31.93 / 0.83
+   = 38.46 = 38
+   
+       R  G  B
+front: Y1 Y2 Y3
+     : 41 38 38
+
+Le Y fourni et le Y calculé sont égaux, la démonstration a donc marché, la formule est valide.
+
+Je vais maintenant l'appliquer a mon cas personnel.
+
+Le fond a la couleur #393D47 et je veut avec une transparance de 83% atteindre la couleur #292626.
+
+       R  G  B
+fond: 57 61 71 X
+front: ? ? ?   Y
+fin: 41 38 38  Z
+
+X1 = 57, X2 = 61, X3 = 71
+Z1 = 41, Z2 = 38, Z3 = 38
+
+Y1 = (Z - (X * 0.17)) / 0.83
+   = (41 - (57 * 0.17)) / 0.83
+   = (41 - 9.69) / 0.83
+   = 31.31 / 0.83
+   = 37.72 = 38
+
+Y2 = (Z - (X * 0.17)) / 0.83
+   = (38 - (61 * 0.17)) / 0.83
+   = (38 - 10.37) / 0.83
+   = 27.63 / 0.83
+   = 33.28 = 33
+
+Y3 = (Z - (X * 0.17)) / 0.83
+   = (38 - (71 * 0.17)) / 0.83
+   = (38 - 12.07) / 0.83
+   = 25.93 / 0.83
+   = 31.24 = 31
+       
+        R  G  B
+front: 38 33 31
+ hexa: 26 21 1F
+    #26211F
+
+Une fois la retransformation appliquée on obtient #2A2626 ce qui est a une teinte rouge de la valeur voulue (#292626) ce qui est amplement suffisant.
+
+La démonstration est donc fructueuse.

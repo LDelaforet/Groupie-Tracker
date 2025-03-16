@@ -1,0 +1,73 @@
+{{define "favoritesPage"}}
+<!DOCTYPE html>
+<head>
+    <link rel="icon" type="image/x-icon" href="/pictures/favicon.png">
+    <link rel="stylesheet" href="/styles/searchResultStyles.css">
+    <link rel="stylesheet" href="/styles/titlebarStyles.css">
+    <link rel="stylesheet" href="/styles/popup.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="/scripts/popup.js" defer></script>
+    <script src="/scripts/favorites.js" defer></script>
+    <title>Home</title>
+    <script>
+        // Fonction pour rediriger vers la page de détail d'une release ou d'un master
+        function goToReleasePage(id, type) {
+            if (type === 'release') {
+                window.location.href = '/release?id=' + id;
+            } else if (type === 'master') {
+                window.location.href = '/master?id=' + id;
+            } else if (type === 'artist') {
+                window.location.href = '/artist?id=' + id;
+            }
+        }
+    </script>
+</head>
+<body>
+    {{if .OAuthPopup}}
+    <div class="popupBackground" id="popupBackground">
+        <div class="popup" id="popup">
+            <h1>Cliquez ici pour vous authentifier</h1>
+            <a href="{{.OAuthLink}}"><button type="popupButton" class="popupButton">S'authentifier</button></a>
+        </div>
+    </div>
+    {{end}}
+    <div class="titleBar">
+        <div class="titlebarButtonsContainer">
+            <button class="titlebarButton" id="titleBar_Index" onclick="window.location.href='/'">Accueil</button>
+            <button class="titlebarButton" id="titleBar_resultMgmt" onclick="window.location.href='/favorites'">Favoris</button>
+        </div>
+
+        <img src="/pictures/logo.png" alt="Logo">
+        
+        <div class="titlebarRightButtonsContainer">
+            <button class="titlebarButton" id="titleBar_About" onclick="window.location.href='/about'">À propos</button>
+        </div>
+    </div>
+    <div class="centeredText">
+        <h1>Favoris:</h1>
+    </div>
+    <div class="mainProductDiv">
+        <ol class="favResultList">
+            {{range .Favorites}}
+            <li>
+                <div class="resultDiv clickable-result" onclick="goToReleasePage({{.ID}}, '{{.Type}}');">
+                    <div class="imageContainer">
+                        <img class="resultImage" src="{{.ImageLink}}" alt="">
+                        <img class="isFav" src="{{if .IsFavorite}}/pictures/star_filled.svg{{else}}/pictures/star_empty.svg{{end}}" alt="" data-release-id="{{printf "%d" .ID}}" data-type="{{.Type}}" onclick="event.stopPropagation();">
+                    </div>
+                    <div class="resultInfo">
+                        <h1 class="resultName">{{.Title}}</h1>
+                        <h2 class="resultTypeDisp">{{.TypeDisp}}</h2>
+                        <div class="yearCountryContainer">
+                            <span class="resultYear">{{.Year}}</span>
+                            <span class="resultCountry">{{.Country}}</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {{end}}
+        </ol>
+    </div>
+</body>
+</html>
+{{end}}

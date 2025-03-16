@@ -1,0 +1,74 @@
+{{define "artistDisplay"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Name}}</title>
+    <link rel="icon" type="image/x-icon" href="/pictures/favicon.png">
+    <link rel="stylesheet" href="/styles/searchResultStyles.css">
+    <link rel="stylesheet" href="/styles/titlebarStyles.css">
+    <link rel="stylesheet" href="/styles/popup.css">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/releaseStyles.css">
+    <script src="/scripts/favorites.js" defer></script>
+</head>
+<body>
+    {{if .OAuthPopup}}
+    <div class="popupBackground" id="popupBackground">
+        <div class="popup" id="popup">
+            <h1>Cliquez ici pour vous authentifier</h1>
+            <a href="{{.OAuthLink}}"><button type="popupButton" class="popupButton">S'authentifier</button></a>
+        </div>
+    </div>
+    {{end}}
+    <div class="titleBar">
+        <div class="titlebarButtonsContainer">
+            <button class="titlebarButton" id="titleBar_Index" onclick="window.location.href='/'">Accueil</button>
+            <button class="titlebarButton" id="titleBar_resultMgmt" onclick="window.location.href='/favorites'">Favoris</button>
+        </div>
+
+        <img src="/pictures/logo.png" alt="Logo">
+        
+        <div class="titlebarRightButtonsContainer">
+            <button class="titlebarButton" id="titleBar_About" onclick="window.location.href='/about'">À propos</button>
+        </div>
+    </div>
+
+    <div class="release-container">
+        <div class="release-header">
+            <div class="release-cover">
+                {{range .Images}}
+                    {{if eq .Type "primary"}}
+                    <img src="{{.Uri}}" alt="{{$.Name}} cover">
+                    {{end}}
+                {{end}}
+                <div class="favorite-button" data-release-id="{{.ID}}" data-type="artist">
+                    <img src="/pictures/star_empty.svg" alt="Ajouter aux favoris">
+                </div>
+            </div>
+            </div>
+            <div class="release-info">
+                <h1 class="release-title">{{.Name}}</h1>
+                <div class="release-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Nom réel:</span>
+                        <span class="detail-value">{{.RealName}}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Profil:</span>
+                        <span class="detail-value">{{.Profile}}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Lien Discogs:</span>
+                        <a href="{{.URI}}" target="_blank" class="discogs-link">Voir sur Discogs</a>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 20px;">
+                    <button onclick="window.location.href='/artistReleases?id={{.ID}}'" style="padding: 10px 20px; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Voir les Releases</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{{end}}

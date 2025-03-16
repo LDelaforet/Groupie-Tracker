@@ -1,0 +1,360 @@
+/* Div principal, il contient tous les divs des produits */
+.mainProductDiv {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: -4%;
+}
+
+/* Liste des produits */
+.resultList {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style-type: none;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 10vmin;
+    margin-top: 10vmin;
+}
+
+.favResultList {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style-type: none;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 10vmin;
+    margin-top: 20vmin;
+}
+
+
+/* Conteneur de l'image */
+.imageContainer {
+    position: relative;
+    display: inline-block;
+    width: 132px;
+}
+
+.imageContainer img {
+    margin: 0;
+    border-radius: 3vmin;
+}
+
+/* Image du résultat */
+.resultImage {
+    width: 125px;
+    height: 125px;
+}
+
+/* Style pour l'étoile des favoris */
+.isFav {
+    position: absolute;
+    cursor: pointer;
+    width: 25%;
+    z-index: 2;
+    top: 20%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    filter: 
+        drop-shadow(1px 0 0 white)
+        drop-shadow(-1px 0 0 white)
+        drop-shadow(0 1px 0 white)
+        drop-shadow(0 -1px 0 white);
+}
+
+/* Div d'un résultat */
+.resultDiv {
+    margin-right: 6vmin;
+    background-color: #606060;
+    border-radius: 3vmin;
+    padding: 1vmin;
+    width: 60vmin;
+    height: auto;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 6vmin;
+    margin-bottom: 2.5vmin;
+}
+
+/* Informations du résultat */
+.resultInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Nom du résultat */
+.resultName {
+    margin: 0;
+    font-size: 36px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 1;
+    font-family: "helvetica";
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Artiste */
+.resultTypeDisp {
+    margin: 0;
+    font-size: 28px;
+    color: #fff;
+    font-weight: normal;
+    line-height: 1.2;
+    font-family: "helvetica";
+}
+
+/* Container pour l'année et le pays */
+.yearCountryContainer {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+    font-family: "helvetica";
+}
+
+/* Année */
+.resultYear {
+    font-size: 20px;
+    color: #fff;
+    font-family: "helvetica";
+}
+
+/* Pays */
+.resultCountry {
+    font-size: 20px;
+    color: #fff;
+    font-family: "helvetica";
+}
+
+/* Encart spécial qui contient le prix et son bouton consulter, j'ai du le séparer du nom psq sinon ca marche pas (incompréhensible)*/
+.resultPriceNInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: -8vmin;
+  }
+
+/* Div qui contient le prix et la reduction */
+.price-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+/* Plutot explicite encore une fois */
+.price {
+    margin-bottom: 0.5vmin;
+    font-family: "pricefont";
+    font-size: 6vmin;
+    color: #FFF;
+    margin-top: 9vmin;
+}
+
+/* Le prix est barré si y'a une reduc */
+.priceReduc{
+    margin-bottom: 0.5vmin;
+    font-family: "pricefont";
+    font-size: 6vmin;
+    color: #FFF;
+    margin-top: 9vmin;
+    text-decoration: line-through;
+}
+
+/* Ptn je pensais pas avoir le temps de l'implementer lui */
+.reduction {
+    margin-bottom: 0.5vmin;
+    font-family: "pricefont";
+    font-size: 6vmin;
+    color: #D41B19;
+    margin-top: 9vmin;
+}
+
+/* Styles pour la barre de recherche dans la page de résultats */
+.results-search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 10vmin;
+    margin-bottom: 2vmin;
+    position: relative;
+    z-index: 5;
+}
+
+.results-search-form {
+    width: 100%;
+    max-width: 50vmin;
+}
+
+.results-search-box {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 4px 15px;
+    height: 5vmin;
+    width: 100%;
+}
+
+.results-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1.8vmin;
+    padding: 0 12px;
+    background: transparent;
+    font-family: "Helvetica", Arial, sans-serif;
+    width: calc(100% - 40px);
+}
+
+.results-search-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+}
+
+.results-search-button:hover svg path {
+    fill: #1a73e8;
+}
+
+.results-search-box:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Styles pour la pagination */
+.pagination-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 15px;
+}
+
+/* Nouveaux styles pour la pagination avec flèches */
+.style_paging {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.style_pagingCarrier {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background-color: #f5f5f5;
+    padding: 8px 16px;
+    border-radius: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.style_pagingCarrier div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.style_pagingCarrier a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.style_pagingCarrier span {
+    font-size: 16px;
+    color: #333;
+    font-family: 'Helvetica', Arial, sans-serif;
+}
+
+.style_pagingCarrier svg {
+    transition: transform 0.2s ease;
+}
+
+.style_pagingCarrier a:hover svg {
+    transform: scale(1.1);
+}
+
+.per-page-selector {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.per-page-selector label {
+    font-size: 2.5vmin;
+    color: white;
+    font-family: "helvetica";
+  }
+
+.per-page-selector select {
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.per-page-selector select:focus {
+    outline: none;
+    border-color: #444;
+}
+
+/* Styles pour les filtres de recherche */
+.search-filter {
+    padding: 4px 8px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.5vmin;
+    cursor: pointer;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    color: #333;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.search-filter:hover {
+    background-color: #e8e8e8;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
+}
+
+.search-filter:focus {
+    outline: none;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.2);
+}
+
+/* Style pour les résultats cliquables */
+.clickable-result {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.clickable-result:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.clickable-result:active {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}

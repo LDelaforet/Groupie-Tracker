@@ -1,0 +1,16 @@
+{
+    "api": {
+        "url": "https://api.discogs.com",
+        "user_agent": "GroupieTracker/1.0",
+        "content_type": "application/x-www-form-urlencoded"
+    },
+    "oauth": {
+        "consumer_key": "mfZFMRfDVnJDqEHYOarB",
+        "consumer_secret": "DpMUfYwmplAkRgHXqkNlPtEufQcWFgjc",
+        "callback_url": "http://127.0.0.1:8080/authorized"
+    },
+    "server": {
+        "host": "127.0.0.1",
+        "port": 8080
+    }
+}

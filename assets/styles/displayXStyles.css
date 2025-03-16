@@ -1,0 +1,144 @@
+/* Div principal, il contient tous les divs des produits */
+.mainResultDiv {
+    display: flex;
+    align-items: flex-start;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    margin-top: 10%;
+}
+
+/* Liste des produits, la balise est un <ol> */
+.resultList {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style-type: none;
+    margin-top: 0;
+    justify-content: center;
+}
+
+/*Div d'un produit, la balise est un <div>*/
+.resultDiv img {
+    width: 69vmin;
+    margin-top: 0vmin;
+    border-radius: 3vmin;
+    height: 50vmin;
+}
+
+/* Div de l'encart d'un produit, contiens son image, son nom, son prix et son bouton consulter personnel*/
+.resultDiv {
+    margin-right: 10vmin;
+    background-color: #E6E6E6;
+    border-radius: 2vmin;
+    padding: 1vmin;
+    width: 185vmin;
+    height: 50vmin;
+    color: #F2F2F2;
+    box-shadow: 0 4vmin 8vmin rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: flex-start;
+    overflow: visible;
+    margin-top: 15vmin;
+    margin-left: 10vmin;
+  }
+
+/* Texte des tailles dispo */
+.resultSize {
+    margin-top: 2vmin;
+    font-family: "Arial";
+    font-weight: bold;
+    color: #444;
+}
+
+/* Description du produit */
+.resultDescription {
+    margin-top: 2vmin;
+    font-family: "Arial";
+    color: #444;
+}
+
+/* Bouton ajouter au panier */
+.addToCartButton {
+    align-items: center;
+    border: 3px solid #D41B19;
+    background-color: #D41B19;
+    border-radius: 100px;
+    color: #fff;
+    font-family: "Arial";
+    width: 34vmin;
+    height: 6vmin;
+    font-size: 2.7vmin;
+    margin-top: -2vmin;
+  }
+
+/* Quand le curseur est sur .addToCartButton */
+.addToCartButton:hover {
+    border: 3px solid #B3201C;
+    background-color: #B3201C;
+}
+
+/* Quand on clique sur .addToCartButton */
+.addToCartButton:active {
+    background-color: #8F0F12;
+    border: 3px solid #8F0F12;
+}
+
+/* Div qui contiens les infos du produit (tout ce qui se trouve a droite de l'image concrètement)*/
+.resultInfo {
+    margin-left: 10px;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Plutot explicite je trouve */
+.resultName {
+    margin: 0;
+    text-align: left;
+    font-size: 4em;
+    font-family: helvetica;
+    font-weight: bold;
+    color: #444;
+  }
+
+/* Encart spécial qui contient le prix et son bouton consulter, j'ai du le séparer du nom psq sinon ca marche pas (incompréhensible)*/
+.resultPriceNInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: -41px;
+}
+
+/* Div qui contient le prix et la reduction */
+.price-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+/* Plutot explicite encore une fois */
+.price {
+    margin-bottom: 26px;
+    font-family: "pricefont";
+    font-size: 50px;
+    color: #444;
+}
+
+/* Le prix est barré si y'a une reduc */
+.priceReduc{
+    margin-bottom: 26px;
+    font-family: "pricefont";
+    font-size: 50px;
+    color: #444;
+    text-decoration: line-through;
+}
+
+/* Plutot explicite encore une fois */
+.reduction {
+    margin-bottom: 10px;
+    font-family: "pricefont";
+    font-size: 50px;
+    color: #D41B19;
+}
